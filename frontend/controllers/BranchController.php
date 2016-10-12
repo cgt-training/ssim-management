@@ -8,12 +8,30 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\Company;
+use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 class BranchController extends Controller
 {
 	 public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['view', 'index','create','update','delete'],
+                'rules' => [
+                    [
+                        'actions' => ['view','index'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['view','index','create','update','delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -59,19 +77,25 @@ class BranchController extends Controller
      */
     public function actionCreate()
     {
-         $model = new Branch();
-         $company = Company::find()->orderBy('company_name')->all(); 
+        $model = new Branch();
+        $company = Company::find()->orderBy('company_name')->all(); 
         date_default_timezone_set('Asia/Kolkata');
         $current_date = date("Y-m-d h:i:sa");
         $model->branch_created = $current_date;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->branch_id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,'company'=>$company,
-            ]);
-        }
 
+        if(Yii::$app->user->can('create_branch'))//Authenticate whether user have right to create branch
+        {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->branch_id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,'company'=>$company,
+                ]);
+            }
+        }
+        else{
+            throw new ForbiddenHttpException('You are not permitted to do this action');
+        }
         
     }
 
@@ -82,13 +106,20 @@ class BranchController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $company = Company::find()->orderBy('company_name')->all(); 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->branch_id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,'company'=>$company,
-            ]);
+        $company = Company::find()->orderBy('company_name')->all();
+
+        if(Yii::$app->user->can('update_branch'))//Authenticate whether user have right to update branch
+        { 
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->branch_id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,'company'=>$company,
+                ]);
+            }
+        }
+        else{
+            throw new ForbiddenHttpException('You are not permitted to do this action');
         }
     }
 
@@ -98,9 +129,15 @@ class BranchController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if(Yii::$app->user->can('delete_branch'))//Authenticate whether user have right to delete branch
+        {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+            return $this->redirect(['index']);
+        }
+        else{
+            throw new ForbiddenHttpException('You are not permitted to do this action');
+        }
     }
 
     /**

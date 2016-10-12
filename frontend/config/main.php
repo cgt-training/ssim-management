@@ -13,6 +13,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    //'layout'=>'initial',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -54,6 +55,10 @@ return [
                 'department/view/<id:\d+>' => 'department/view',
                 'branch/update/<id:\d+>' => 'branch/update',
             ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'defaultRoles'=>['guest'],
         ],
 
         

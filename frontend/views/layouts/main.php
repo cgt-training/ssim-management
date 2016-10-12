@@ -28,60 +28,6 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-   <!--  <?php
-    NavBar::begin([
-    //     'brandLabel' => 'My Company',
-    //     'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar navbar-default no-margin-bottom',
-        ],
-    ]);
-    echo '<div class="container padding-15 ">
-            <div class="logo navbar-left row">
-                <div class="float-left col-xs-3">
-                    <img src="../img/28-sep/logo.png" class="img-responsive" style="margin: auto">
-                </div>
-                <div class="float-left text-white col-xs-9">
-                    <h2 style="margin-top:0px;">Shri Shukhmani Institude Of Management</h2>
-                    <h4>(Approved By A.I.C.T, Govt. of India)</h4>
-                </div>
-                
-                
-            </div>
-            <form class="navbar-form navbar-right">
-            <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Go!</button>
-      </span>
-    </div>
-          </form>
-        </div>';
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Company', 'url' => ['/company']],
-        ['label' => 'Branch', 'url' => ['/branch']],
-        ['label' => 'Department', 'url' => ['/department']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'nav navbar-nav'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?> -->
 <header>
     <nav class="navbar navbar-default no-margin-bottom">
         <div class="container padding-15 ">
@@ -142,14 +88,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link']
-            )
-            . Html::endForm()
-            . '</li>';
+        $menuItems[] = ['label' => 'LogOut(' . Yii::$app->user->identity->username .')', 'url' => ['/site/logout']];
     }
     echo Menu::widget([
         'options' => ['class' => 'nav navbar-nav'],

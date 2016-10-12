@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     
     <p>
-        <?= Html::a('Create Branch', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Yii::$app->user->isGuest?'':Html::a('Create Branch', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -37,7 +37,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',],
             'branch_status',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'visibleButtons' => [
+                    'update'=> function () {
+                        return Yii::$app->user->isGuest? false : true;
+                     },
+                    'delete' => function () {
+                        return Yii::$app->user->isGuest? false : true;
+                     },
+                ],
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>
