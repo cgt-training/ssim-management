@@ -29,7 +29,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'company_name',
             'company_email:email',
             'company_address',
-
+            [
+            'attribute' => 'img',
+            'format' => 'html',
+            'label' => 'Company Profile',
+            'value' => function ($dataProvider) {
+                return Html::img('@web/frontend/web/'.$dataProvider['company_profile'],
+                    ['width' => '60px']);
+            },
+        ],
             ['attribute'=>'company_created',
                 'value'=>'company_created',
                'filter' => DatePicker::widget([

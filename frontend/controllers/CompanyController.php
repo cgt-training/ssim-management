@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
+
 /**
  * CompanyController implements the CRUD actions for Company model.
  */
@@ -68,14 +70,40 @@ class CompanyController extends Controller
         date_default_timezone_set('Asia/Kolkata');
         $current_date = date("Y-m-d h:i:sa");
         $model->company_created = $current_date;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->company_id]);
-        } else {
+        
+        if ($model->load(Yii::$app->request->post())) {
+            $imageName= $model->company_name;
+
+            $model->file = UploadedFile::getInstance($model,'file');
+            if($model->file->extension=='gif'||$model->file->extension=='jpg'||$model->file->extension=='png')
+            {
+                $model->file->saveAs('uploads/'.$imageName.'.'.$model->file->extension);
+
+                // save the path in DB.
+
+                $model->company_profile = 'uploads/'.$imageName.'.'.$model->file->extension;
+
+                
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->company_id]);
+            }
+            else{
+                return $this->render('create', [
+                'model' => $model,'msg'=>'Please upload image file only',
+            ]);
+            }
+
+            
+        }  
+        else 
+        {
             return $this->render('create', [
                 'model' => $model,
             ]);
         }
     }
+
+    
 
     /**
      * Updates an existing Company model.
@@ -86,10 +114,39 @@ class CompanyController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            
+            $imageName= $model->company_name;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->company_id]);
-        } else {
+            $model->file = UploadedFile::getInstance($model,'file');
+            if($model->file!='')
+            {
+
+             if(($model->file->extension=='gif'||$model->file->extension=='jpg'||$model->file->extension=='png'))
+                {
+
+                    $model->file->saveAs('uploads/'.$imageName.'.'.$model->file->extension);
+
+                    // save the path in DB.
+
+                    $model->company_profile = 'uploads/'.$imageName.'.'.$model->file->extension;
+                    
+                    $model->save();
+                    return $this->redirect(['view', 'id' => $model->company_id]);
+                }
+                else
+                {
+                    return $this->render('update', ['model' => $model,'msg'=>'Please upload image file only',]);
+                } 
+            }
+            else{
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->company_id]);
+            }
+        }
+        else {
             return $this->render('update', [
                 'model' => $model,
             ]);

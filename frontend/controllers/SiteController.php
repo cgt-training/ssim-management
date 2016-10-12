@@ -13,7 +13,12 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\models\EntryForm;
+use frontend\models\UploadFile;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
+use frontend\models\UploadForm;
 /**
  * Site controller
  */
@@ -81,6 +86,26 @@ class SiteController extends Controller
     public function actionSay($message = 'Hello')
     {
         return $this->render('say', ['message' => $message]);
+    }
+
+    public function actionUploadfunc()
+    {
+       //echo Url::to(['site/uploadfunc'],true);
+        $model = new UploadForm();
+        if (Yii::$app->request->isPost) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->upload()) 
+            {
+                return $this->render('uploadsucc',['msg' => 'Uploaded successfully']);
+                // file is uploaded successfully
+                
+            }
+            else{
+                return $this->render('uploadsucc',['msg' => 'Upload error']);
+            }
+        }
+
+        return $this->render('uploadfunc', ['model' => $model]);
     }
 
      public function actionEntry()
@@ -234,4 +259,5 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
 }

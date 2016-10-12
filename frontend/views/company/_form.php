@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Company */
@@ -25,6 +26,12 @@ $current_date = date("Y-m-d h:i:sa");
 
     <?= $form->field($model, 'company_status')->dropDownList([ 'active' => 'Active', 'deactive' => 'Deactive' ], ['prompt' => 'Select']) ?>
 
+    <?php $img = Url::to('@web/frontend/web/'.$model->company_profile);   ?>
+    <?= $model->isNewRecord ?'':(Html::img($img,['alt' => 'Profile','class'=>"img-responsive",'width'=>200,])) ?>
+    
+    <?= $form->field($model, 'file')->fileInput() ?>
+
+        
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

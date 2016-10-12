@@ -3,10 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Company */
 
-$this->title = $model->company_id;
+$this->title = $model->company_name;
 $this->params['breadcrumbs'][] = ['label' => 'Companies', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -24,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
+    <?php $img = Url::to('@web/frontend/web/'.$model->company_profile);     
+                echo Html::img($img,['alt' => 'Profile','class'=>"img-responsive",'width'=>200,'style'=>['margin'=>'auto']]);?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
