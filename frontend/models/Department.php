@@ -73,4 +73,5 @@ class Department extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Company::className(), ['company_id' => 'company_fk_id']);
     }
+    
 }

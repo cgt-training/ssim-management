@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "branch".
@@ -70,6 +71,16 @@ class Branch extends \yii\db\ActiveRecord
     public function getDepartments()
     {
         return $this->hasMany(Department::className(), ['branch_fk_id' => 'branch_id']);
+    }
+
+    public function braclist($company_id)
+    {
+        $branch = Branch::find()
+        ->where(['company_fk_id' => $company_id])
+        ->orderBy('branch_id')
+        ->all();
+
+        return $branch;
     }
 
 }

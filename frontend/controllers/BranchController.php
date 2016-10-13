@@ -49,6 +49,7 @@ class BranchController extends Controller
     {
     	$searchModel = new BranchSearch();
     	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination=['pageSize'=>5];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -88,7 +89,7 @@ class BranchController extends Controller
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->branch_id]);
             } else {
-                return $this->render('create', [
+                return $this->renderAjax('create', [
                     'model' => $model,'company'=>$company,
                 ]);
             }

@@ -83,11 +83,13 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    //first action to print hello in YII
     public function actionSay($message = 'Hello')
     {
         return $this->render('say', ['message' => $message]);
     }
 
+    //Image upload method simply upload picture to folder
     public function actionUploadfunc()
     {
        //echo Url::to(['site/uploadfunc'],true);
@@ -108,7 +110,9 @@ class SiteController extends Controller
         return $this->render('uploadfunc', ['model' => $model]);
     }
 
-     public function actionEntry()
+
+    //Simple from action taking input and displaying on confirm page
+    public function actionEntry()
     {
         $model = new EntryForm();
          
@@ -123,6 +127,7 @@ class SiteController extends Controller
             return $this->render('entry', ['model' => $model]);
         }
     }
+    
     /**
      * Logs in a user.
      *
@@ -199,6 +204,7 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
+           
             if ($user = $model->signup()) {     //signup method in SignupForm which return either null or user details
                 if (Yii::$app->getUser()->login($user)) { //common-models-loginform two methods 
                     return $this->goHome();

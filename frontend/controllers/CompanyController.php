@@ -12,6 +12,7 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use yii\data\Pagination;
 
 /**
  * CompanyController implements the CRUD actions for Company model.
@@ -19,7 +20,8 @@ use yii\web\ForbiddenHttpException;
 class CompanyController extends Controller
 {
    // public $layout='initial';
-    /**
+    
+        /**
      * @inheritdoc
      */
 
@@ -59,8 +61,20 @@ class CompanyController extends Controller
     {
         $searchModel = new CompanySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->pagination=['pageSize'=>5];
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionList()
+    {
+        
+        $searchModel = new CompanySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination=['pageSize'=>5];
+        return $this->render('list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -110,7 +124,7 @@ class CompanyController extends Controller
                     return $this->redirect(['view', 'id' => $model->company_id]);
                 }
                 else{
-                    return $this->render('create', [
+                    return $this->renderAjax('create', [
                     'model' => $model,'msg'=>'Please upload image file only',
                 ]);
                 }
@@ -119,7 +133,7 @@ class CompanyController extends Controller
             }  
             else 
             {
-                return $this->render('create', [
+                return $this->renderAjax('create', [
                     'model' => $model,
                 ]);
             }

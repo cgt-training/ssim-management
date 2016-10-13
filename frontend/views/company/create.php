@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         echo '<h3 class="text-center" style="color:red">'.$msg.'</h3>';
     }
 ?>
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
     <?= $this->render('_form', [
         'model' => $model,

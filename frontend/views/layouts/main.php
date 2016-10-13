@@ -80,9 +80,11 @@ AppAsset::register($this);
           <?php
           $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'Company', 'url' => ['/company'],'active'=>Yii::$app->controller->id=='company',],
+        ['label' => 'Company', 'url' => ['/company'],'active'=>Yii::$app->controller->id=='company'&&Yii::$app->controller->action->id!='list',],
+        ['label' => 'Company-List', 'url' => ['/company/list'],'active'=>Yii::$app->controller->action->id=='list',],
         ['label' => 'Branch', 'url' => ['/branch'],'active'=>Yii::$app->controller->id=='branch',],
         ['label' => 'Department', 'url' => ['/department'],'active'=>Yii::$app->controller->id=='department',],
+        ['label' => 'Customer', 'url' => ['/customer'],'active'=>Yii::$app->controller->id=='customer',],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
@@ -139,7 +141,7 @@ AppAsset::register($this);
 
     </div>
 
-    <div class="row margin-top-15 wheat-bg padding-15">
+    <div class="row margin-top-15 wheat-bg padding-15" id="main-content">
      <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

@@ -15,12 +15,36 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Yii::$app->user->isGuest?'':Html::a('Create Department', ['create'], ['class' => 'btn btn-success']) ?>
+    <p>        
+        <?= Html::button('Create Department', ['value'=>Url::to('create'), 'class' => 'btn btn-success', 
+                                                'id'=>'modalButton' ]) ?>
     </p>
+
+    <?php  
+        Modal::begin([
+        'header' => '<h2>Create Department</h2>',
+        'id' => 'modal',
+        'size' => 'modal-lg',
+        //'toggleButton' => ['label' => 'click me'],
+        ]);
+
+        echo '<div id="modalContent">
+                    
+                  </div>';
+
+        Modal::end();
+    ?>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions' => function ($searchModel){   
+            if($searchModel->department_status == 'active') {
+                return ['class' => 'success'];
+            }
+            else{
+                return ['class' => 'danger'];
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [

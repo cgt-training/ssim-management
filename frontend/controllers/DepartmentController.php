@@ -11,6 +11,7 @@ use frontend\models\Company;
 use frontend\models\Branch;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
+use yii\helpers\Json;
 
 class DepartmentController extends \yii\web\Controller
 {
@@ -49,6 +50,7 @@ class DepartmentController extends \yii\web\Controller
     {
         $searchModel = new DepartmentSearch();
     	$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->pagination=['pageSize'=>5];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -147,5 +149,24 @@ class DepartmentController extends \yii\web\Controller
             throw new ForbiddenHttpException('You are not permitted to do this action');
         }
     }
+
+    public function actionBranch() {
+    $out = [];
+    if (isset($_POST['depdrop_parents'])) {
+        $parents = $_POST['depdrop_parents'];
+        if ($parents != null) {
+            $company_id = $parents[0];
+            $out = Branch::braclist($company_id); 
+            $result=[];
+            foreach ($out as $each) {
+                $result[]= ['id'=>$each->branch_id,'name'=>$each->branch_name];
+            }
+            echo Json::encode(['output'=>$result, 'selected'=>'']);
+            return;
+        }
+    }
+    echo Json::encode(['output'=>'No branch for the selected', 'selected'=>'']);
+}
+
 
 }
