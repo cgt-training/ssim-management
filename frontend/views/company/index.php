@@ -14,15 +14,6 @@ use yii\bootstrap\Modal;
 $this->title = 'Companies';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="company-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>        
-        <?= Html::button('Create Company', ['value'=>Url::to('create'), 'class' => 'btn btn-success', 
-                                                'id'=>'modalButton' ]) ?>
-    </p>
 
     <?php  
         Modal::begin([
@@ -38,7 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
         Modal::end();
     ?>
-<?php Pjax::begin(); 
+<div class="company-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>        
+        <?= Yii::$app->user->isGuest?'':Html::button('Create Company', ['value'=>Url::toRoute('create'), 'class' => 'btn btn-success modalButton', 'id'=>'modalButton' ]) ?>
+    </p>
+
+<?php Pjax::begin(['id'=>'company-pjax']); 
 
 ?>    
 <?= GridView::widget([
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return Html::img('@web/frontend/web/'.$dataProvider['company_profile'],
                     ['width' => '60px']);
             },
-        ],
+            ],
             ['attribute'=>'company_created',
                 'value'=>'company_created',
                'filter' => DatePicker::widget([
@@ -86,8 +86,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Yii::$app->user->isGuest? false : true;
                      },
                 ],
+             'buttons' => [
+                    'delete' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url,['class'=>"delete-request"]);
+                    },
+                ],
             ],
         ],
     ]); ?>
 
 <?php Pjax::end(); ?></div>
+<?= $this->registerJsFile('@web/frontend/web/js/company.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>

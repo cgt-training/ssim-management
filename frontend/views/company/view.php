@@ -16,9 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Yii::$app->user->isGuest?'':Html::a('Update', ['update', 'id' => $model->company_id], ['class' => 'btn btn-primary']) ?>
+        <?= Yii::$app->user->isGuest?'':Html::a('Update', ['update', 'id' => $model->company_id], ['class' => 'btn btn-primary update-company']) ?>
         <?= Yii::$app->user->isGuest?'':Html::a('Delete', ['delete', 'id' => $model->company_id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger delete-request',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
@@ -40,3 +40,5 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
+<?= $this->registerJsFile('@web/frontend/web/js/company.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>

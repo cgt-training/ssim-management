@@ -47,6 +47,10 @@ return [
                 'enablePrettyUrl' => true,
                 'showScriptName' => false,
         ],
+        // 'urlManagerFrontEnd' => [
+        //     'rules'[
+        //     ],
+        // ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

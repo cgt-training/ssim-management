@@ -88,7 +88,7 @@ class CompanyController extends Controller
     public function actionView($id)
     {
         //echo Url::to(['company/view'],true);
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -111,6 +111,9 @@ class CompanyController extends Controller
                 $imageName= $model->company_name;
 
                 $model->file = UploadedFile::getInstance($model,'file');
+                if($model->file!='')
+                {
+
                 if($model->file->extension=='gif'||$model->file->extension=='jpg'||$model->file->extension=='png')
                 {
                     $model->file->saveAs('uploads/'.$imageName.'.'.$model->file->extension);
@@ -119,14 +122,28 @@ class CompanyController extends Controller
 
                     $model->company_profile = 'uploads/'.$imageName.'.'.$model->file->extension;
 
+                    Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+
+                    return ['status'=>$model->save()];
                     
-                    $model->save();
-                    return $this->redirect(['view', 'id' => $model->company_id]);
+                    //return $this->redirect(['view', 'id' => $model->company_id]);
+
                 }
                 else{
                     return $this->renderAjax('create', [
                     'model' => $model,'msg'=>'Please upload image file only',
                 ]);
+                }
+
+                }
+                else{
+                    $model->company_profile = 'uploads/UserImage.png';
+
+                    Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+                    $model->save();
+                    $id = Company::find()->where(['company_created'=>$current_date])->one();
+                    return ['status'=>true,'id'=>$id->company_id];
+                    
                 }
 
                 
@@ -155,6 +172,7 @@ class CompanyController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $current_date = $model->company_created;
         if(Yii::$app->user->can('update_company'))//Authenticate whether user have right to update company
         {
             if ($model->load(Yii::$app->request->post())) 
@@ -175,21 +193,25 @@ class CompanyController extends Controller
 
                         $model->company_profile = 'uploads/'.$imageName.'.'.$model->file->extension;
                         
-                        $model->save();
-                        return $this->redirect(['view', 'id' => $model->company_id]);
+                        Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+                    $model->save();
+                    $id = Company::find()->where(['company_created'=>$current_date])->one();
+                    return ['status'=>true,'id'=>$id->company_id];
                     }
                     else
                     {
-                        return $this->render('update', ['model' => $model,'msg'=>'Please upload image file only',]);
+                        return $this->renderAjax('update', ['model' => $model,'msg'=>'Please upload image file only',]);
                     } 
                 }
                 else{
+                    Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
                     $model->save();
-                    return $this->redirect(['view', 'id' => $model->company_id]);
+                    $id = Company::find()->where(['company_created'=>$current_date])->one();
+                    return ['status'=>true,'id'=>$id->company_id];
                 }
             }
             else {
-                return $this->render('update', [
+                return $this->renderAjax('update', [
                     'model' => $model,
                 ]);
             }
@@ -209,9 +231,9 @@ class CompanyController extends Controller
     {
         if(Yii::$app->user->can('delete_company'))//Authenticate whether user have right to delete company
         {
-            $this->findModel($id)->delete();
-
-            return $this->redirect(['index']);
+            
+            Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+            return ['status'=>$this->findModel($id)->delete()];
         }
         else{
             throw new ForbiddenHttpException('You are not permitted to do this action');

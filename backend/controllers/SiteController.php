@@ -15,6 +15,7 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
+    public $layout = 'oldLayout';
     public function behaviors()
     {
         return [
@@ -24,20 +25,12 @@ class SiteController extends Controller
                     [
                         'actions' => ['login', 'error'],
                         'allow' => true,
+                        'roles' => ['?'],
                     ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+                    
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+            
         ];
     }
 
@@ -60,7 +53,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect('login');
     }
 
     /**
@@ -71,12 +64,12 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(array('dashboard/index'));
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(array('dashboard/index'));
         } else {
             return $this->render('login', [
                 'model' => $model,
@@ -89,10 +82,10 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
+    // public function actionLogout()
+    // {
+    //     Yii::$app->user->logout();
 
-        return $this->goHome();
-    }
+    //     return $this->goHome();
+    // }
 }

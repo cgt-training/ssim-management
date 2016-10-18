@@ -17,7 +17,7 @@ class AppAsset extends AssetBundle
     public $img = [
     ];
     public $js = [
-        'js/main.js',
+        'js/main.js','js/bootbox.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

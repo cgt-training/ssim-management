@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-
+use yii\web\View;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Company */
 /* @var $form yii\widgets\ActiveForm */
@@ -12,8 +12,10 @@ $current_date = date("Y-m-d h:i:sa");
 ?>
 
 <div class="company-form">
-
-    <?php  $form = ActiveForm::begin(); ?>
+<div class="alert alert-success" role="alert" style="display: none">
+    <p>Company Created Successfully</p>
+</div>
+    <?php  $form = ActiveForm::begin(['id'=>'form_dev']); ?>
 
     <?= $form->field($model, 'company_name')->textInput(['maxlength' => true]) ?>
 
@@ -39,3 +41,6 @@ $current_date = date("Y-m-d h:i:sa");
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?= $this->registerJsFile('@web/frontend/web/js/company.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+?>

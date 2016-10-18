@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
         </div>
 
-        <div class="col-sm-6 col-xs-12">
+        <!-- <div class="col-sm-6 col-xs-12">
 
             <h5>Company Permission</h5>
             <?= $form->field($model, 'create_company')->checkbox(array('label'=>'Permit To create Company','value'=>'create_company')); ?>
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'delete_department')->checkbox(array('label'=>'Permit To delete Company','value'=>'delete_department')); ?>
 
-        </div>
+        </div> -->
         </div>
         <div class="form-group text-center">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary btn-lg', 'name' => 'signup-button']) ?>
