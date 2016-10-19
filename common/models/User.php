@@ -25,7 +25,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-
+    public $auth_role;
 
     /**
      * @inheritdoc
@@ -51,10 +51,46 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['username', 'email'], 'required'],
+            [['username', 'password', 'password_reset_token', 'email','firstname','lastname'], 'string', 'max' => 255],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [
+            ['username', 'email'],
+            'unique',
+            'when' => function ($model, $attribute) {
+                return $model->{$attribute} !== $model->getOldAttribute($attribute);
+            },
+            'on' => 'update'
+            ],
+            ['role','safe']
         ];
     }
+
+    // public function assignRoles($user){
+    //     //initialize auth manager
+    //     $auth  = Yii::$app->authManager;
+
+    //     //check if all permission assigned then assign admin role
+    //     if(count($this->auth_role) == count($auth_roles)){
+    //         $adminRole = $auth->getRole('admin');
+    //         $auth->assign($adminRole,$user->getId());
+    //     }
+    //     else{
+    //         foreach($this->auth_role as $each){
+    //             if($each == 'author'){
+    //                 $role = $auth->getRole('author');
+    //             }
+    //             elseif($each == 'updator'){
+    //                 $role = $auth->getRole('updator');
+    //             }
+    //             elseif($each == 'deleter'){
+    //                 $role = $auth->getRole('deleter');
+    //             }
+    //              $auth->assign($role,$user->getId());
+    //         }
+    //     }
+    // }
 
     /**
      * @inheritdoc

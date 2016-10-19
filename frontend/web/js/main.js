@@ -1,3 +1,11 @@
+$(document).ready(function(){
+    $('.modalButton').click(function(){
+
+      $('#modal').modal('show').find('#modalContent').load($(this).attr('value'));
+      
+
+   });
+});
 $('#form-signup').on('submit',function(e){
 	e.preventDefault();
 	var form = $(this);

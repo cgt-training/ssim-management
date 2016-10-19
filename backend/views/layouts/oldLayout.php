@@ -11,7 +11,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
-AppAsset::register($this);
+//AppAsset::register($this);
 DashboardAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -73,13 +73,13 @@ DashboardAsset::register($this);
 <?php $this->endBody() ?>
 </body>
 <script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
+  // $(function () {
+  //   $('input').iCheck({
+  //     checkboxClass: 'icheckbox_square-blue',
+  //     radioClass: 'iradio_square-blue',
+  //     increaseArea: '20%' // optional
+  //   });
+  // });
 </script>
 </html>
 <?php $this->endPage() ?>

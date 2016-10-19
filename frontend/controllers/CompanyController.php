@@ -13,6 +13,7 @@ use yii\web\UploadedFile;
 use yii\filters\AccessControl;
 use yii\web\ForbiddenHttpException;
 use yii\data\Pagination;
+use yii\web\Response;
 
 /**
  * CompanyController implements the CRUD actions for Company model.
@@ -33,7 +34,7 @@ class CompanyController extends Controller
                 'only' => ['view', 'index','create','update','delete'],
                 'rules' => [
                     [
-                        'actions' => ['view','index'],
+                        'actions' => ['view','index','create','update','delete'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -105,8 +106,6 @@ class CompanyController extends Controller
         $current_date = date("Y-m-d h:i:sa");
         $model->company_created = $current_date;
 
-        if(Yii::$app->user->can('create_company'))//Authenticate whether user have right to create company
-        {
             if ($model->load(Yii::$app->request->post())) {
                 $imageName= $model->company_name;
 
@@ -122,7 +121,7 @@ class CompanyController extends Controller
 
                     $model->company_profile = 'uploads/'.$imageName.'.'.$model->file->extension;
 
-                    Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+                    Yii::$app->response->format = Response::FORMAT_JSON;
 
                     return ['status'=>$model->save()];
                     
@@ -139,7 +138,7 @@ class CompanyController extends Controller
                 else{
                     $model->company_profile = 'uploads/UserImage.png';
 
-                    Yii::$app->response->format = yii\web\Response::FORMAT_JSON;
+                    Yii::$app->response->format = Response::FORMAT_JSON;
                     $model->save();
                     $id = Company::find()->where(['company_created'=>$current_date])->one();
                     return ['status'=>true,'id'=>$id->company_id];
@@ -154,10 +153,7 @@ class CompanyController extends Controller
                     'model' => $model,
                 ]);
             }
-        }
-        else{
-            throw new ForbiddenHttpException('You are not permitted to do this action');
-        }
+        
 
     }
 

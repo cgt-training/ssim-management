@@ -25,10 +25,12 @@ $('body').on('beforeSubmit','form#form_dev', function(e) {
    			//form.find('input,select').val('');
    			//$('#modalContent').load('view/'+res.id);
    			//$('#main-content').prepend('<div class="alert alert-success" role="alert" style="display: none"><p>Company Created Successfully</p></div>');
-   			$('#modal').modal('hide');
-   			$('body').removeClass('modal-open');
-   			$('.modal-backdrop').remove();
-   			$('#main-content').load('company/view/'+res.id);
+   			
+          $('#modal').modal('hide');
+          $('body').removeClass('modal-open');
+          $('.modal-backdrop').remove();
+       
+   			$('#main-content').load('view/'+res.id);
    		}
    		else
    		{
@@ -80,7 +82,7 @@ $('a.delete-request').on('click',function(e){
         e.preventDefault();
         var el = jQuery(this);
 
-        jQuery.post(el.attr('href'), {}, function(response) {
+        jQuery.get(el.attr('href'), {}, function(response) {
             jQuery('div#main-content').html(response);
             lateBinding();
         });

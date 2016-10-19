@@ -20,6 +20,7 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'loginUrl' => [ 'site/login' ],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
@@ -46,11 +47,25 @@ return [
         'urlManager' => [
                 'enablePrettyUrl' => true,
                 'showScriptName' => false,
+                'rules' => [                
+                'company/view/<id:\d+>' => 'company/view',
+                'company/viewcompany/<id:\d+>' => 'company/viewcompany',
+                'company/update/<id:\d+>' => 'company/update',
+                'branch/view/<id:\d+>' => 'branch/view',
+                'branch/update/<id:\d+>' => 'branch/update',
+                'department/view/<id:\d+>' => 'department/view',
+                'department/update/<id:\d+>' => 'department/update',
+                'user/view/<id:\d+>' => 'user/view',
+                'user/update/<id:\d+>' => 'user/update',
+                ],
+                
         ],
-        // 'urlManagerFrontEnd' => [
-        //     'rules'[
-        //     ],
-        // ],
+        'urlManagerFrontend' => [
+                'class' => 'yii\web\urlManager',
+                'baseUrl' => '/ssim-management/frontend/web/',//i.e. $_SERVER['DOCUMENT_ROOT'] .'/yiiapp/web/'
+                'enablePrettyUrl' => true,
+                'showScriptName' => false,
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

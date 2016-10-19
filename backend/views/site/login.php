@@ -13,11 +13,13 @@ $this->title = 'Login';
 <body >
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+  
+    <p class="login-box-msg">
+      <?= isset($msg)?'<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><h4><i class="icon fa fa-ban"></i> Sorry!</h4>'.$msg.'</div>':'Sign in to start your session'?>
+    </p>
 
     <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
       <div class="form-group has-feedback">
@@ -41,17 +43,17 @@ $this->title = 'Login';
       </div>
    <?php ActiveForm::end(); ?>
 
-    <div class="social-auth-links text-center">
+    <!-- <div class="social-auth-links text-center">
       <p>- OR -</p>
       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
         Facebook</a>
       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
         Google+</a>
-    </div>
+    </div> -->
     <!-- /.social-auth-links -->
 
-    <a href="#">I forgot my password</a><br>
-    <a href="register.html" class="text-center">Register a new membership</a>
+    <!-- <a href="#">I forgot my password</a><br>
+    <a href="register.html" class="text-center">Register a new membership</a> -->
 
   </div>
   <!-- /.login-box-body -->

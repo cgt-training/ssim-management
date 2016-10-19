@@ -21,7 +21,9 @@
         "kartik-v/yii2-widget-select2": "@dev",
         "2amigos/yii2-date-picker-widget": "~1.0",
         "yiisoft/yii2-jui": "^2.0",
-        "kartik-v/yii2-widget-depdrop": "@dev"
+        "kartik-v/yii2-widget-depdrop": "@dev",
+        "wbraganca/yii2-dynamicform": "*",
+        "faryshta/yii2-enum": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

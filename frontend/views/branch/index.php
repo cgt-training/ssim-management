@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     
     <p>        
-        <?= Html::button('Create Branch', ['value'=>Url::to('branch/create'), 'class' => 'btn btn-success', 
+        <?= Html::button('Create Branch', ['value'=>Url::to('branch/create'), 'class' => 'btn btn-success modalButton', 
                                                 'id'=>'modalButton' ]) ?>
     </p>
 

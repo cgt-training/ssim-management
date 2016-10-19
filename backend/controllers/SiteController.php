@@ -16,6 +16,7 @@ class SiteController extends Controller
      * @inheritdoc
      */
     public $layout = 'oldLayout';
+    //public $defaultAction = 'login';
     public function behaviors()
     {
         return [
@@ -26,6 +27,12 @@ class SiteController extends Controller
                         'actions' => ['login', 'error'],
                         'allow' => true,
                         'roles' => ['?'],
+                    ],
+                    'rules' => 
+                    [
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                     
                 ],
@@ -53,7 +60,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->redirect('login');
+        return $this->redirect(array('dashboard/index'));
     }
 
     /**
@@ -63,14 +70,24 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+
         if (!Yii::$app->user->isGuest) {
             return $this->redirect(array('dashboard/index'));
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(array('dashboard/index'));
-        } else {
+
+        if ($model->load(Yii::$app->request->post())) 
+        {    
+            if($model->adminlogin())       
+                return $this->redirect(array('dashboard/index'));
+            else
+                return $this->render('login', [
+                'model' => $model,'msg' =>'Only Admin can access this Panel!!!'
+            ]);
+        } 
+        else {
+
             return $this->render('login', [
                 'model' => $model,
             ]);

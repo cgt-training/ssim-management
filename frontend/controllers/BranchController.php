@@ -21,7 +21,7 @@ class BranchController extends Controller
                 'only' => ['view', 'index','create','update','delete'],
                 'rules' => [
                     [
-                        'actions' => ['view','index'],
+                        'actions' => ['view','index','create','update','delete'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -84,8 +84,7 @@ class BranchController extends Controller
         $current_date = date("Y-m-d h:i:sa");
         $model->branch_created = $current_date;
 
-        if(Yii::$app->user->can('create_branch'))//Authenticate whether user have right to create branch
-        {
+        
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->branch_id]);
             } else {
@@ -93,10 +92,7 @@ class BranchController extends Controller
                     'model' => $model,'company'=>$company,
                 ]);
             }
-        }
-        else{
-            throw new ForbiddenHttpException('You are not permitted to do this action');
-        }
+        
         
     }
 

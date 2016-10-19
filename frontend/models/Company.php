@@ -91,4 +91,6 @@ class Company extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+    
 }

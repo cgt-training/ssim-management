@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>        
-        <?= Yii::$app->user->isGuest?'':Html::button('Create Company', ['value'=>Url::toRoute('create'), 'class' => 'btn btn-success modalButton', 'id'=>'modalButton' ]) ?>
+        <?= Html::button('Create Company', ['value'=>Url::toRoute('create'), 'class' => 'btn btn-success modalButton', 'id'=>'modalButton' ]) ?>
     </p>
 
 <?php Pjax::begin(['id'=>'company-pjax']); 

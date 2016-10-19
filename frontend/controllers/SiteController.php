@@ -208,8 +208,10 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) 
         {
            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-           $model->signup();
-           return ['status'=>true];
+           if($model->signup())
+            return ['status'=>true];
+            else
+                return;
             //if ($user = $model->signup()) {     //signup method in SignupForm which return either null or user details
                 // if (Yii::$app->getUser()->login($user)) { //common-models-loginform two methods 
                 //     return $this->goHome();
